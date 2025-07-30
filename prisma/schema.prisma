@@ -13,16 +13,40 @@ enum UserRole {
   sale
 }
 
+enum DeliveryStatus {
+ processing
+ shipped
+  delivered
+}
+
 model User {
   id    String @id @default(uuid())
   name  String
   email String
-password String
+  password String
 
   role  UserRole @default(customer)
+
+  deliveries Delivery[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-@@map("users")
+  @@map("users")
+}
+
+model Delivery {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  description String
+
+  status      DeliveryStatus @default(processing)
+
+  user User @relation(fields: [userId], references: [id])
+  
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+
+  @@map("deliveries")
 }
