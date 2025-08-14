@@ -38,7 +38,10 @@ const token = sign({role: user.role ?? "customer"}, secret, {
     expiresIn
 })
 
-        return res.json({token})
+const {password: hashedPassword, ...userWithoutPassword} = user
+
+// Eu poderia também exibir utilizando "user:userWithoutPassword", que mostraria de uma forma diferente na saída 
+        return res.json({token, ...userWithoutPassword})
     }
 }
 
