@@ -23,7 +23,11 @@ await prisma.delivery.create({
     }
 
 async index(req: Request, res: Response) {
-const deliveries = await prisma.delivery.findMany()
+const deliveries = await prisma.delivery.findMany({
+    include: {
+        user: { select: {name:true, email: true}}
+    }
+})
 
 return res.status(200).json(deliveries)
 
