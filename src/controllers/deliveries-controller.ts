@@ -21,6 +21,14 @@ await prisma.delivery.create({
 
         return res.status(201).json()
     }
+
+async index(req: Request, res: Response) {
+const deliveries = await prisma.delivery.findMany()
+
+return res.status(200).json(deliveries)
+
+}
+
 }
 
 export { DeliveriesController }
