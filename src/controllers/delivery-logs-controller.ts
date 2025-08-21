@@ -24,6 +24,10 @@ if(delivery.status === "processing") {
     throw new AppError("change status to shipped", 400)
 }
 
+if(delivery.status === "delivered") {
+    throw new AppError("Delivery already delivered", 400)
+}
+
 
 await prisma.deliveryLog.create({
     data: {
