@@ -34,6 +34,30 @@ await prisma.deliveryLog.create({
 
         return res.status(201).json();
     }
+
+    async show(req: Request, res: Response) {
+const paramsSchema = z.object({
+    delivery_id: z.string().uuid(),
+})
+
+const { delivery_id } = paramsSchema.parse(req.params)
+
+const delivery = await prisma.delivery.findUnique({
+    where: {id: delivery_id},
+})
+
+if(req.user?.role === "customer" && req.user.id !== delivery?.userId) {
+    throw new AppError("The user can only view their deliveries", 401)
 }
+
+if(!delivery) {
+    throw new AppError("Delivery not found", 404)
+}
+
+return res.json(delivery)
+
+    }
+
+    }
 
 export { DeliveryLogsController }
