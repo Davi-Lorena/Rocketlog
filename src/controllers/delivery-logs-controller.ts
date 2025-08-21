@@ -44,6 +44,10 @@ const { delivery_id } = paramsSchema.parse(req.params)
 
 const delivery = await prisma.delivery.findUnique({
     where: {id: delivery_id},
+    include: {
+        user: true,
+        logs: true
+    }
 })
 
 if(req.user?.role === "customer" && req.user.id !== delivery?.userId) {
