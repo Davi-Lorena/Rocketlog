@@ -43,4 +43,17 @@ expect(res.body.message).toBe("User with this email already exists")
 
 })
 
-});
+it("should throw an validation error if email is invalid", async () => {
+   const res = await request(app).post("/users").send({
+       name: "test invalid email",
+       email: "invalid-email",
+       password: "password123"
+   })
+
+
+   expect(res.status).toBe(400)
+   expect(res.body.message).toBe("Validation error")
+
+})
+
+})
